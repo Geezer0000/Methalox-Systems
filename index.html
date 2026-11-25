@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>METHALOX SYSTEMS — Autonome Mars-Treibstoffsynthese</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canvas: '#FBFBFA',
+            charcoal: '#111215',
+            line: '#E2E2DC',
+            lineDark: '#2C2D32',
+            mars: {
+              vermilion: '#E05305',
+              rust: '#C43D00'
+            },
+            methalox: {
+              cyan: '#0284C7',
+              deep: '#0369A1'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            display: ['Space Grotesk', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FBFBFA;
+      color: #111215;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+    .swiss-grid {
+      background-size: 48px 48px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.022) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.022) 1px, transparent 1px);
+    }
+    .technical-blueprint {
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(2, 132, 199, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(2, 132, 199, 0.06) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="swiss-grid text-charcoal font-sans antialiased selection:bg-slate-200">
+
+  <!-- ========================================================================= -->
+  <!-- TOP NAVIGATION — ULTRA-CLEAN OHNE ZAHLEN, OHNE FLAMME                     -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-50 bg-[#FBFBFA]/95 backdrop-blur-md border-b border-line">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Logo Wordmark -->
+      <a href="#" onclick="showPage('page-overview')" class="flex items-center gap-3 group">
+        <span class="w-3.5 h-3.5 bg-charcoal"></span>
+        <div class="flex items-baseline gap-2">
+          <span class="font-display font-extrabold tracking-tight text-lg text-charcoal">METHALOX</span>
+          <span class="font-mono text-xs text-slate-500 tracking-wider uppercase">SYSTEMS AG</span>
+        </div>
+      </a>
+
+      <!-- Clean Tabs ohne Zahlen -->
+      <nav class="hidden lg:flex items-center space-x-1 font-mono text-xs tracking-wider">
+        <button onclick="showPage('page-overview')" id="tab-overview" class="nav-tab px-3 py-2 border-b-2 border-charcoal font-semibold text-charcoal">
+          ÜBERSICHT
+        </button>
+        <button onclick="showPage('page-blueprint')" id="tab-blueprint" class="nav-tab px-3 py-2 border-b-2 border-transparent text-slate-500 hover:text-charcoal hover:border-slate-300 transition-all">
+          BAUPLAN &amp; SKIZZEN
+        </button>
+        <button onclick="showPage('page-process')" id="tab-process" class="nav-tab px-3 py-2 border-b-2 border-transparent text-slate-500 hover:text-charcoal hover:border-slate-300 transition-all">
+          FUNKTIONSWEISE
+        </button>
+        <button onclick="showPage('page-chemistry')" id="tab-chemistry" class="nav-tab px-3 py-2 border-b-2 border-transparent text-slate-500 hover:text-charcoal hover:border-slate-300 transition-all">
+          REAKTIONSCHEMIE
+        </button>
+        <button onclick="showPage('page-specs')" id="tab-specs" class="nav-tab px-3 py-2 border-b-2 border-transparent text-slate-500 hover:text-charcoal hover:border-slate-300 transition-all">
+          SPEZIFIKATIONEN
+        </button>
+        <button onclick="showPage('page-businessplan')" id="tab-businessplan" class="nav-tab px-3 py-2 border-b-2 border-transparent text-slate-500 hover:text-charcoal hover:border-slate-300 transition-all">
+          BUSINESSPLAN
+        </button>
+        <button onclick="showPage('page-roadmap')" id="tab-roadmap" class="nav-tab px-3 py-2 border-b-2 border-transparent text-slate-500 hover:text-charcoal hover:border-slate-300 transition-all flex items-center gap-1.5">
+          <span id="roadmap-nav-lock-icon" class="text-[11px]">🔒</span>
+          <span>FOUNDER ROADMAP</span>
+        </button>
+      </nav>
+
+      <!-- Clean System Badge -->
+      <div class="hidden xl:block font-mono text-xs text-slate-500 tracking-wider">
+        MARS ISRU INFRASTRUCTURE
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="lg:hidden flex overflow-x-auto border-t border-line px-4 py-2 font-mono text-[11px] gap-2 scrollbar-none">
+      <button onclick="showPage('page-overview')" class="px-3 py-1 bg-charcoal text-white rounded whitespace-nowrap">Übersicht</button>
+      <button onclick="showPage('page-blueprint')" class="px-3 py-1 bg-slate-100 text-charcoal rounded whitespace-nowrap">Bauplan</button>
+      <button onclick="showPage('page-process')" class="px-3 py-1 bg-slate-100 text-charcoal rounded whitespace-nowrap">Funktion</button>
+      <button onclick="showPage('page-chemistry')" class="px-3 py-1 bg-slate-100 text-charcoal rounded whitespace-nowrap">Chemie</button>
+      <button onclick="showPage('page-specs')" class="px-3 py-1 bg-slate-100 text-charcoal rounded whitespace-nowrap">Specs</button>
+      <button onclick="showPage('page-businessplan')" class="px-3 py-1 bg-slate-100 text-charcoal rounded whitespace-nowrap">Businessplan</button>
+      <button onclick="showPage('page-roadmap')" class="px-3 py-1 bg-slate-100 text-charcoal rounded whitespace-nowrap flex items-center gap-1">
+        <span id="roadmap-mobile-lock-icon">🔒</span>
+        <span>Founder Roadmap</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-12">
+
+    <!-- ======================================================================= -->
+    <!-- 1. ÜBERSICHT (HOMEPAGE MIT LEITBILD)                                    -->
+    <!-- ======================================================================= -->
+    <section id="page-overview" class="page-content block space-y-24">
+      
+      <!-- HERO (SAUBER, OHNE FLAMME, MINIMALISTISCH) -->
+      <div class="border-b border-charcoal pb-16 pt-8">
+        <div class="space-y-6 max-w-4xl">
+          <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
+            <span class="w-1.5 h-1.5 bg-mars-vermilion"></span>
+            IN-SITU RESOURCE UTILIZATION · AUTONOMOUS PAYLOAD
+          </div>
+
+          <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-charcoal leading-[1.05]">
+            Autonome Treibstoff­synthese auf dem Mars.
+          </h1>
+
+          <p class="text-lg sm:text-2xl text-slate-700 font-light leading-relaxed max-w-3xl">
+            Wir bauen schlüsselfertige Industrieanlagen, die im Frachtraum von Trägerraketen transportiert werden. Vor Ort auf dem Mars erzeugen sie aus atmosphärischem CO₂ und subglazialem Eis flüssiges Methan und flüssigen Sauerstoff für den Rückflug zur Erde.
+          </p>
+
+          <div class="pt-4 flex flex-wrap items-center gap-4 font-mono text-xs">
+            <button onclick="showPage('page-blueprint')" class="px-6 py-3.5 bg-charcoal text-white hover:bg-slate-800 transition-all font-medium tracking-wider">
+              BAUPLAN & HARDWARE-SKIZZEN ÖFFNEN →
+            </button>
+            <button onclick="showPage('page-process')" class="px-6 py-3.5 border border-charcoal text-charcoal hover:bg-black/5 transition-all font-medium tracking-wider">
+              SYSTEMPROZESS VERSTEHEN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- 01 · LEITBILD (EXAKT NACH DEINER ORIGINAL-VORLAGE)                   -->
+      <!-- ===================================================================== -->
+      <div>
+        <div class="mb-8">
+          <span class="text-mars-vermilion font-mono tracking-widest text-xs font-bold uppercase block mb-1">
+            01 · LEITBILD
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-charcoal tracking-tight">
+            Vision & Mission
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- VISION -->
+          <div class="bg-white rounded-3xl p-10 sm:p-12 shadow-sm border border-line hover:border-mars-vermilion/50 transition-all duration-300">
+            <h3 class="text-4xl sm:text-5xl font-black tracking-tight text-mars-vermilion mb-6 font-sans">
+              VISION
+            </h3>
+            <h4 class="text-2xl font-bold text-charcoal mb-4">
+              Multiplanetare Unabhängigkeit
+            </h4>
+            <p class="text-slate-600 text-base leading-relaxed">
+              Autarke Energieinfrastruktur im gesamten Sonnensystem.
+            </p>
+          </div>
+
+          <!-- MISSION -->
+          <div class="bg-white rounded-3xl p-10 sm:p-12 shadow-sm border border-line hover:border-methalox-cyan/50 transition-all duration-300">
+            <h3 class="text-4xl sm:text-5xl font-black tracking-tight text-methalox-cyan mb-6 font-sans">
+              MISSION
+            </h3>
+            <h4 class="text-2xl font-bold text-charcoal mb-4">
+              Serienreife Vor-Ort-Synthese
+            </h4>
+            <p class="text-slate-600 text-base leading-relaxed">
+              Schlüsselfertige autonome Treibstofffabriken ab Werk.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- KERNARCHITEKTUR DER MASCHINE -->
+      <div class="border-t border-line pt-16">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div>
+            <span class="text-slate-500 font-mono tracking-widest text-xs uppercase block mb-1">
+              SYSTEMARCHITEKTUR
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-charcoal">
+              Die drei Kernblöcke der Anlage
+            </h2>
+          </div>
+          <button onclick="showPage('page-blueprint')" class="text-xs font-mono font-semibold text-charcoal hover:text-mars-vermilion transition-colors">
+            DETAILLIERTE SKIZZEN ALLER MODULE ANSEHEN →
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-8 border border-line bg-white space-y-4">
+            <span class="font-mono text-xs text-mars-vermilion font-bold">BLOCK I</span>
+            <h4 class="text-lg font-bold text-charcoal">Rohstoffgewinnung</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Thermischer Rodriguez-Bohrkopf schmilzt Mars-Gletschereis im Untergrund. Sorptionskompressoren saugen CO₂ aus der Atmosphäre und verdichten es auf 30 bar.
+            </p>
+            <div class="pt-4 border-t border-line font-mono text-xs text-slate-500">
+              Kapazität: 65 kg/h H₂O · 99,2% CO₂-Reinheit
+            </div>
+          </div>
+
+          <div class="p-8 border border-line bg-white space-y-4">
+            <span class="font-mono text-xs text-methalox-cyan font-bold">BLOCK II</span>
+            <h4 class="text-lg font-bold text-charcoal">Chemische Konvertierung</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              PEM-Hochdruck-Wasserelektrolyseur gekoppelt mit kontinuierlichem Ruthenium-Festbett-Sabatier-Reaktor zur autothermen Methanisierung bei 400 °C.
+            </p>
+            <div class="pt-4 border-t border-line font-mono text-xs text-slate-500">
+              Konversionsgrad: > 98,5 % · Integrierte Wärmerückgewinnung
+            </div>
+          </div>
+
+          <div class="p-8 border border-line bg-white space-y-4">
+            <span class="font-mono text-xs text-slate-800 font-bold">BLOCK III</span>
+            <h4 class="text-lg font-bold text-charcoal">Kryogenik & Betankung</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Zweistufige Stirling- und Pulsrohr-Kühlanlagen verflüssigen CH₄ bei 111,6 K und O₂ bei 90,2 K und fördern verlustfrei in die Raketentanks.
+            </p>
+            <div class="pt-4 border-t border-line font-mono text-xs text-slate-500">
+              Gesamtproduktion: 1.250 kg Methalox pro Tag
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 2. BAUPLAN & SKIZZEN DER EINZELTEILE (DETAIL-ENTWICKLUNG)                -->
+    <!-- ======================================================================= -->
+    <section id="page-blueprint" class="page-content hidden space-y-20">
+      
+      <div class="border-b border-charcoal pb-8">
+        <span class="font-mono text-xs uppercase tracking-widest text-slate-500 block mb-2">PRODUKTENTWICKLUNG & HARDWARE-BLUEPRINT</span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-charcoal mb-4">
+          Bauplan & technische Skizzen der Einzelteile
+        </h1>
+        <p class="text-lg text-slate-700 max-w-3xl font-light leading-relaxed">
+          Detaillierte Konstruktionsübersicht der sechs Hauptbaugruppen der ARES-1 Mars-Methalox-Maschine, inklusive Schnittzeichnungen, Funktionsprinzip und Fertigungsplan.
+        </p>
+      </div>
+
+      <!-- ÜBERSICHTSSKIZZE: GESAMTMASCHINE IM RAKETEN-RACK -->
+      <div class="border border-line bg-white p-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-4 border-b border-line gap-4">
+          <div>
+            <span class="font-mono text-xs font-bold text-slate-500 uppercase">EXPLOSIONSZEICHNUNG // GESAMTMASCHINE</span>
+            <h3 class="text-2xl font-bold text-charcoal mt-1">ARES-1 Payload-Rack-Chassis (Standard 9.0 m Frachtraum)</h3>
+          </div>
+          <span class="font-mono text-xs px-3 py-1 bg-slate-100 text-charcoal border border-line">
+            CAD-MODELL V3.8 · FLIGHT-READY ENVELOPE
+          </span>
+        </div>
+
+        <!-- SVG SKIZZE DER GESAMTEN MASCHINE -->
+        <div class="technical-blueprint p-6 border border-line bg-[#FAFAFA] rounded flex justify-center">
+          <svg width="100%" height="320" viewBox="0 0 900 320" fill="none" xmlns="http://www.w3.org/2000/svg" class="max-w-4xl">
+            <!-- Rocket Fairing Contour (dashed) -->
+            <path d="M50 300 C80 180 200 40 450 40 C700 40 820 180 850 300" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="6 6" />
+            <text x="450" y="30" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">STARSHIP / NEW GLENN PAYLOAD ENVELOPE (9.0 m DURCHMESSER)</text>
+
+            <!-- Base Mounting Platform -->
+            <rect x="180" y="270" width="540" height="24" fill="#E2E8F0" stroke="#1E293B" stroke-width="2" />
+            <line x1="200" y1="294" x2="190" y2="310" stroke="#1E293B" stroke-width="2" />
+            <line x1="700" y1="294" x2="710" y2="310" stroke="#1E293B" stroke-width="2" />
+            <text x="450" y="286" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#0F172A">RACK-MONTAGEPLATTFORM & VIBRATIONSDÄMPFUNG (ISO-BOLZEN)</text>
+
+            <!-- Module 1: Subsurface Drill Winch -->
+            <rect x="200" y="160" width="110" height="100" fill="#FFFFFF" stroke="#E05305" stroke-width="2" />
+            <line x1="255" y1="260" x2="255" y2="315" stroke="#E05305" stroke-width="3" />
+            <polygon points="250,315 260,315 255,325" fill="#E05305" />
+            <text x="255" y="195" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="bold" fill="#E05305">MODUL 01</text>
+            <text x="255" y="215" text-anchor="middle" font-family="Inter" font-size="10" fill="#334155">Eis-Schmelz-</text>
+            <text x="255" y="230" text-anchor="middle" font-family="Inter" font-size="10" fill="#334155">Bohrsonde</text>
+
+            <!-- Transfer Pipe 1 -->
+            <line x1="310" y1="200" x2="330" y2="200" stroke="#0F172A" stroke-width="2" />
+
+            <!-- Module 2: CO2 Sorption & Compression -->
+            <rect x="330" y="150" width="110" height="110" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" />
+            <circle cx="385" cy="190" r="22" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3 3" />
+            <text x="385" y="194" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#0F172A">CO₂</text>
+            <text x="385" y="230" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="bold" fill="#0F172A">MODUL 02</text>
+            <text x="385" y="245" text-anchor="middle" font-family="Inter" font-size="9" fill="#475569">Sorptions-Pumpe</text>
+
+            <!-- Module 3: PEM Electrolyzer -->
+            <rect x="460" y="150" width="110" height="110" fill="#FFFFFF" stroke="#0284C7" stroke-width="2" />
+            <line x1="475" y1="165" x2="475" y2="215" stroke="#0284C7" stroke-width="2" />
+            <line x1="485" y1="165" x2="485" y2="215" stroke="#0284C7" stroke-width="1" stroke-dasharray="2 2" />
+            <line x1="495" y1="165" x2="495" y2="215" stroke="#0284C7" stroke-width="2" />
+            <text x="515" y="230" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="bold" fill="#0284C7">MODUL 03</text>
+            <text x="515" y="245" text-anchor="middle" font-family="Inter" font-size="9" fill="#0284C7">PEM-Elektrolyse</text>
+
+            <!-- Module 4: Sabatier Reactor Core -->
+            <rect x="590" y="140" width="110" height="120" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" />
+            <rect x="610" y="155" width="70" height="50" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5" />
+            <text x="645" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="9" font-weight="bold" fill="#B45309">400°C Ru</text>
+            <text x="645" y="230" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="bold" fill="#0F172A">MODUL 04</text>
+            <text x="645" y="245" text-anchor="middle" font-family="Inter" font-size="9" fill="#475569">Sabatier-Kern</text>
+
+            <!-- Module 5: Cryo & Transfer Loop -->
+            <rect x="720" y="130" width="110" height="130" fill="#FFFFFF" stroke="#0369A1" stroke-width="2" />
+            <rect x="735" y="145" width="35" height="40" fill="#E0F2FE" stroke="#0284C7" />
+            <rect x="780" y="145" width="35" height="40" fill="#F0F9FF" stroke="#0369A1" />
+            <text x="752" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#0284C7">LOX</text>
+            <text x="797" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#0369A1">LCH4</text>
+            <text x="775" y="230" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="bold" fill="#0369A1">MODUL 05</text>
+            <text x="775" y="245" text-anchor="middle" font-family="Inter" font-size="9" fill="#475569">Kryo-Kühler</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- SKIZZEN DER EINZELTEILE IM DETAIL                                     -->
+      <!-- ===================================================================== -->
+      <div class="space-y-12">
+        <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-slate-500">
+          DETAILSKIZZEN & FUNKTION DER EINZELNEN BAUTEILE
+        </h3>
+
+        <!-- BAUTEIL 1: THERMISCHE EISBOHRSONDE (RODRIGUEZ-WELL) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 border border-line bg-white p-8">
+          <div class="lg:col-span-5 space-y-4">
+            <span class="font-mono text-xs text-mars-vermilion font-bold">BAUTEIL 01</span>
+            <h4 class="text-2xl font-bold text-charcoal">Subsurface Thermo-Schmelzbohrer</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Die Sonde wird über eine automatisierte Winde vom Raketenrumpf bis zu 4,5 Meter in den Mars-Regolith abgesenkt, bis sie auf die Gletschereisschicht trifft.
+            </p>
+            <ul class="font-mono text-xs text-slate-600 space-y-2 pt-2 border-t border-line">
+              <li><strong>Heizkopf:</strong> Elektrischer 18 kW Incoloy-Widerstandsheizer (schmilzt Eis zu einer Wasserkaverne).</li>
+              <li><strong>Pumpe:</strong> Beheizte kavitationsresistente Tauchpumpe fördert 65 Liter flüssiges Wasser pro Stunde.</li>
+              <li><strong>Filtermatrix:</strong> Cyclon-Sedimentabscheider und Aktivkohle-Ionentauscher zur Eliminierung giftiger Perchlorat-Salze.</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7 bg-[#FAFAFA] border border-line p-6 technical-blueprint flex items-center justify-center">
+            <!-- Skizze Bohrsonde -->
+            <svg width="100%" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Mars Surface Line -->
+              <line x1="20" y1="40" x2="480" y2="40" stroke="#C43D00" stroke-width="2" />
+              <text x="40" y="32" font-family="JetBrains Mono" font-size="10" fill="#C43D00">MARS-OBERFLÄCHE (REGOLITH)</text>
+
+              <!-- Glacier Ice Line -->
+              <line x1="20" y1="120" x2="480" y2="120" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 4" />
+              <text x="40" y="112" font-family="JetBrains Mono" font-size="10" fill="#0284C7">REINES GLETSCHEREIS (TIEFE > 1.8 m)</text>
+
+              <!-- Drill Probe Body -->
+              <rect x="220" y="10" width="60" height="170" rx="4" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" />
+              <!-- Heating Cones -->
+              <polygon points="220,180 280,180 250,225" fill="#E05305" stroke="#9A3412" stroke-width="1.5" />
+              <text x="250" y="205" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FFFFFF">18 kW</text>
+
+              <!-- Heated Water Cavity (Melt Pool) -->
+              <path d="M190 190 C180 235 320 235 310 190 Z" fill="#E0F2FE" fill-opacity="0.5" stroke="#0284C7" stroke-width="1" stroke-dasharray="3 3" />
+              <text x="330" y="210" font-family="JetBrains Mono" font-size="10" fill="#0369A1">Schmelzwasser-Kaverne</text>
+
+              <!-- Umbilical Cable to Rocket -->
+              <line x1="250" y1="10" x2="250" y2="0" stroke="#0F172A" stroke-width="3" />
+              <text x="140" y="20" font-family="JetBrains Mono" font-size="10" fill="#475569">Beheizte Förderleitung ⟶</text>
+
+              <!-- Perchlorate Filter Callout -->
+              <rect x="230" y="60" width="40" height="45" fill="#F1F5F9" stroke="#64748B" />
+              <text x="250" y="85" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#334155">Filter</text>
+              <line x1="270" y1="80" x2="350" y2="80" stroke="#64748B" stroke-width="1" />
+              <text x="355" y="83" font-family="JetBrains Mono" font-size="9" fill="#475569">Perchlorat-Abscheider</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BAUTEIL 2: ATMOSPHÄREN-KOMPRESSOR (TSA-SORPTION) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 border border-line bg-white p-8">
+          <div class="lg:col-span-5 space-y-4">
+            <span class="font-mono text-xs text-charcoal font-bold">BAUTEIL 02</span>
+            <h4 class="text-2xl font-bold text-charcoal">CO₂-Sorptions-Kompressor</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Die Marsatmosphäre ist extrem dünn (ca. 6 bis 8 mbar), besteht jedoch zu 95,3 % aus reinem CO₂. Ein mechanischer Kolbenkompressor würde schnell verschleißen. Stattdessen nutzen wir ein thermisches Adsorptionssystem ohne bewegliche Verschleißteile.
+            </p>
+            <ul class="font-mono text-xs text-slate-600 space-y-2 pt-2 border-t border-line">
+              <li><strong>Zeolith 13X-Matrix:</strong> Bindet CO₂ bei kalter Marsnacht (-80 °C) molekular an.</li>
+              <li><strong>Thermischer Zyklus:</strong> Bei Aufheizung am Tag desorbiert das CO₂ und erzeugt autogen bis zu 30 bar Druck für den Sabatier-Reaktor.</li>
+              <li><strong>Zyklon-Staubfilter:</strong> Hält elektrostatischen Mars-Staub zu 99,99% von den Ventilen fern.</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7 bg-[#FAFAFA] border border-line p-6 technical-blueprint flex items-center justify-center">
+            <!-- Skizze TSA Kompressor -->
+            <svg width="100%" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Dust Inflow -->
+              <path d="M30 110 L90 110" stroke="#E05305" stroke-width="2" marker-end="url(#arrow)" />
+              <text x="30" y="95" font-family="JetBrains Mono" font-size="9" fill="#E05305">Mars-Gas 7 mbar</text>
+
+              <!-- Dust Filter -->
+              <polygon points="90,70 130,110 90,150" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.5" />
+              <text x="98" y="113" font-family="JetBrains Mono" font-size="8" fill="#0F172A">Filter</text>
+
+              <!-- Dual Chamber TSA -->
+              <!-- Bed A -->
+              <rect x="170" y="45" width="120" height="60" rx="3" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" />
+              <rect x="180" y="55" width="100" height="40" fill="#FEF3C7" stroke="#F59E0B" stroke-dasharray="2 2" />
+              <text x="230" y="75" text-anchor="middle" font-family="JetBrains Mono" font-size="9" font-weight="bold" fill="#B45309">BETT A: KÜHLUNG</text>
+              <text x="230" y="88" text-anchor="middle" font-family="Inter" font-size="8" fill="#78350F">Adsorption bei -80°C</text>
+
+              <!-- Bed B -->
+              <rect x="170" y="130" width="120" height="60" rx="3" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" />
+              <rect x="180" y="140" width="100" height="40" fill="#FEE2E2" stroke="#EF4444" stroke-dasharray="2 2" />
+              <text x="230" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="9" font-weight="bold" fill="#B91C1C">BETT B: HEIZUNG</text>
+              <text x="230" y="173" text-anchor="middle" font-family="Inter" font-size="8" fill="#991B1B">Desorption bei +150°C</text>
+
+              <!-- Outlet High Pressure -->
+              <path d="M290 75 L350 75 L350 110 L440 110" stroke="#0284C7" stroke-width="2.5" />
+              <path d="M290 160 L350 160 L350 110" stroke="#0284C7" stroke-width="2.5" />
+              <text x="370" y="95" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#0284C7">30 BAR CO₂</text>
+              <text x="370" y="130" font-family="JetBrains Mono" font-size="8" fill="#64748B">⟶ Zum Sabatier-Reaktor</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BAUTEIL 3: PEM-ELEKTROLYSE-STACK -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 border border-line bg-white p-8">
+          <div class="lg:col-span-5 space-y-4">
+            <span class="font-mono text-xs text-methalox-cyan font-bold">BAUTEIL 03</span>
+            <h4 class="text-2xl font-bold text-charcoal">PEM-Hochdruck-Elektrolyse</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Die Protonenaustauschmembran (PEM) spaltet deionisiertes Mars-Wasser ohne giftige flüssige Laugen. Der Sauerstoff wird direkt auf 35 bar vorverdichtet, um Energie für die Verflüssigung zu sparen.
+            </p>
+            <ul class="font-mono text-xs text-slate-600 space-y-2 pt-2 border-t border-line">
+              <li><strong>Bipolarplatten:</strong> Korrosionsfeste Titanplatten mit Platin-Iridium-Katalysatorbeschichtung.</li>
+              <li><strong>Membran:</strong> Verstärktes Nafion-117 Polymer (H<sup>+</sup>-selektiv).</li>
+              <li><strong>Sicherheit:</strong> Integrierte H<sub>2</sub>-in-O<sub>2</sub>-Sensorik mit Millisekunden-Abschaltung.</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7 bg-[#FAFAFA] border border-line p-6 technical-blueprint flex items-center justify-center">
+            <!-- Skizze PEM Stack -->
+            <svg width="100%" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Water Inlet -->
+              <line x1="30" y1="120" x2="110" y2="120" stroke="#0284C7" stroke-width="3" />
+              <text x="30" y="110" font-family="JetBrains Mono" font-size="10" fill="#0284C7">H₂O INLET (l)</text>
+
+              <!-- Anode / Cathode Stack -->
+              <rect x="110" y="40" width="22" height="160" fill="#E2E8F0" stroke="#1E293B" stroke-width="1.5" />
+              <text x="121" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#0F172A" transform="rotate(-90 121 125)">ANODE (+)</text>
+
+              <rect x="140" y="40" width="16" height="160" fill="#38BDF8" fill-opacity="0.4" stroke="#0284C7" stroke-width="1.5" />
+              <text x="148" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#0369A1" transform="rotate(-90 148 125)">PEM-MEMBRAN</text>
+
+              <rect x="164" y="40" width="22" height="160" fill="#E2E8F0" stroke="#1E293B" stroke-width="1.5" />
+              <text x="175" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#0F172A" transform="rotate(-90 175 125)">KATHODE (-)</text>
+
+              <!-- Multi Stack Repetition -->
+              <rect x="194" y="40" width="60" height="160" fill="#F8FAFC" stroke="#64748B" stroke-width="1" stroke-dasharray="3 3" />
+              <text x="224" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#64748B">36 ZELLEN</text>
+
+              <!-- Outlets -->
+              <!-- O2 Outlet (Top) -->
+              <path d="M121 40 L121 20 L380 20" stroke="#0284C7" stroke-width="2.5" />
+              <text x="390" y="24" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#0284C7">O₂ ⟶ ZUM KRYOTANK</text>
+
+              <!-- H2 Outlet (Bottom) -->
+              <path d="M175 200 L175 220 L380 220" stroke="#E05305" stroke-width="2.5" />
+              <text x="390" y="224" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#E05305">H₂ ⟶ ZUM SABATIER</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BAUTEIL 4: SABATIER-FESTBETTREAKTOR MIT WÄRMETAUSCHER -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 border border-line bg-white p-8">
+          <div class="lg:col-span-5 space-y-4">
+            <span class="font-mono text-xs text-charcoal font-bold">BAUTEIL 04</span>
+            <h4 class="text-2xl font-bold text-charcoal">Sabatier-Festbettreaktor</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Hier erfolgt die eigentliche Methansynthese: CO<sub>2</sub> + 4&nbsp;H<sub>2</sub> &rarr; CH<sub>4</sub> + 2&nbsp;H<sub>2</sub>O. Die stark exotherme Hitze wird über einen Doppelmantel-Wärmetauscher abgeführt und genutzt, um das Mars-Eis zu schmelzen.
+            </p>
+            <ul class="font-mono text-xs text-slate-600 space-y-2 pt-2 border-t border-line">
+              <li><strong>Katalysator-Bett:</strong> Hochaktives Ruthenium auf &gamma;-Al<sub>2</sub>O<sub>3</sub>-Pellets (verhindert Verkokung).</li>
+              <li><strong>Temperaturführung:</strong> Einlass 300&nbsp;&deg;C, Reaktionszone 400–420&nbsp;&deg;C.</li>
+              <li><strong>Wasser-Kondensator:</strong> Kühlt das Gasgemisch ab, trennt flüssiges Wasser ab und führt es verlustfrei in die PEM-Zelle zurück.</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7 bg-[#FAFAFA] border border-line p-6 technical-blueprint flex items-center justify-center">
+            <!-- Skizze Sabatier Reaktor -->
+            <svg width="100%" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Reaktor Tube -->
+              <rect x="130" y="30" width="220" height="90" rx="8" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" />
+              <!-- Cooling Jacket -->
+              <rect x="120" y="20" width="240" height="110" rx="12" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4 4" />
+              <text x="240" y="15" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#B45309">WÄRMERÜCKGEWINNUNG (KÜHLMANTEL)</text>
+
+              <!-- Catalyst Pellets -->
+              <pattern id="pellets" width="10" height="10" patternUnits="userSpaceOnUse">
+                <circle cx="5" cy="5" r="2.5" fill="#94A3B8" />
+              </pattern>
+              <rect x="150" y="40" width="180" height="70" fill="url(#pellets)" />
+              <text x="240" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#0F172A" background="#FFF">Ru / Al₂O₃ KATALYSATOR</text>
+
+              <!-- Feed Inflow -->
+              <line x1="20" y1="75" x2="130" y2="75" stroke="#0F172A" stroke-width="2.5" />
+              <text x="30" y="65" font-family="JetBrains Mono" font-size="10" fill="#0F172A">CO₂ + 4 H₂ (30 bar)</text>
+
+              <!-- Gas Outflow to Condenser -->
+              <path d="M350 75 L400 75 L400 160" stroke="#0F172A" stroke-width="2" />
+
+              <!-- Condenser -->
+              <rect x="360" y="160" width="80" height="60" fill="#FFFFFF" stroke="#0284C7" stroke-width="1.5" />
+              <text x="400" y="185" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#0284C7">Kondensator</text>
+
+              <!-- Separated Streams -->
+              <!-- CH4 to Cryo -->
+              <line x1="440" y1="190" x2="480" y2="190" stroke="#0369A1" stroke-width="2.5" />
+              <text x="450" y="180" font-family="JetBrains Mono" font-size="9" font-weight="bold" fill="#0369A1">CH₄ Gas</text>
+
+              <!-- H2O recycled back -->
+              <path d="M360 200 L180 200 L180 140" stroke="#0284C7" stroke-width="1.5" stroke-dasharray="3 3" />
+              <text x="260" y="215" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#0284C7">⟵ H₂O Kondensat zurück zur Elektrolyse (100%)</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BAUTEIL 5: KRYOGENE VERFLÜSSIGUNGSANLAGE -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 border border-line bg-white p-8">
+          <div class="lg:col-span-5 space-y-4">
+            <span class="font-mono text-xs text-methalox-deep font-bold">BAUTEIL 05</span>
+            <h4 class="text-2xl font-bold text-charcoal">Kryogener Zweistufen-Verflüssiger</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Treibstoffe können im gasförmigen Zustand nicht in Raketentanks gelagert werden. Der Kryoblock kühlt Methan und Sauerstoff unter ihre jeweiligen Siedepunkte ab und hält sie ohne Verdampfungsverlust (Zero-Boil-Off).
+            </p>
+            <ul class="font-mono text-xs text-slate-600 space-y-2 pt-2 border-t border-line">
+              <li><strong>Pulsrohr-Kühler:</strong> Verschleißfreie Helium-Pulsrohre ohne bewegliche Teile im Kaltkopf.</li>
+              <li><strong>Methan-Siedepunkt:</strong> &minus;161,5&nbsp;&deg;C (111,6&nbsp;K) bei Dichte 422&nbsp;kg/m<sup>3</sup>.</li>
+              <li><strong>Sauerstoff-Siedepunkt:</strong> &minus;182,9&nbsp;&deg;C (90,2&nbsp;K) bei Dichte 1.141&nbsp;kg/m<sup>3</sup>.</li>
+              <li><strong>Transfer-Umbilical:</strong> Vakuum-superisolierte Transferleitung mit Schnellkupplung zum Raketenstutzen.</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-7 bg-[#FAFAFA] border border-line p-6 technical-blueprint flex items-center justify-center">
+            <!-- Skizze Kryo Block -->
+            <svg width="100%" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Vacuum Box Outer -->
+              <rect x="40" y="30" width="420" height="180" rx="4" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" />
+              <text x="250" y="25" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#64748B">VAKUUM-SUPERISOLIERTE KRYOKAMMER (MLI)</text>
+
+              <!-- Pulse Tube Cold Head 1 (LCH4) -->
+              <rect x="80" y="60" width="140" height="120" fill="#F0F9FF" stroke="#0284C7" stroke-width="1.5" />
+              <text x="150" y="85" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#0284C7">LCH₄ KONDENSATOR</text>
+              <text x="150" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="14" font-weight="bold" fill="#0369A1">111,6 K</text>
+              <line x1="95" y1="130" x2="205" y2="130" stroke="#0284C7" stroke-width="1" />
+              <text x="150" y="150" text-anchor="middle" font-family="Inter" font-size="9" fill="#0369A1">Subcooled Liquid Methane</text>
+
+              <!-- Pulse Tube Cold Head 2 (LOX) -->
+              <rect x="270" y="60" width="140" height="120" fill="#E0F2FE" stroke="#0369A1" stroke-width="1.5" />
+              <text x="340" y="85" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#0369A1">LOX KONDENSATOR</text>
+              <text x="340" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="14" font-weight="bold" fill="#0369A1">90,2 K</text>
+              <line x1="285" y1="130" x2="395" y2="130" stroke="#0369A1" stroke-width="1" />
+              <text x="340" y="150" text-anchor="middle" font-family="Inter" font-size="9" fill="#0369A1">Subcooled Liquid Oxygen</text>
+
+              <!-- Pipe to rocket tanks -->
+              <line x1="150" y1="180" x2="150" y2="230" stroke="#0284C7" stroke-width="3" />
+              <line x1="340" y1="180" x2="340" y2="230" stroke="#0369A1" stroke-width="3" />
+              <text x="245" y="235" text-anchor="middle" font-family="JetBrains Mono" font-size="9" font-weight="bold" fill="#0F172A">DIREKTER TRANSFER IN RAKETENTANKS</text>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FERTIGUNGS- & TESTPLAN (WIE WIR DAS PRODUKT BAUEN) -->
+      <div class="border-t border-charcoal pt-16">
+        <div class="mb-8">
+          <span class="font-mono text-xs uppercase tracking-widest text-slate-500 block mb-1">
+            INDUSTRIALISIERUNGS-ROADMAP
+          </span>
+          <h2 class="text-3xl font-extrabold text-charcoal">
+            Der 4-Phasen-Fertigungsplan zum serienreifen Produkt
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 font-mono text-xs">
+          <div class="p-6 border border-line bg-white space-y-3">
+            <span class="text-mars-vermilion font-bold block">PHASE 01 (MONATE 1–6)</span>
+            <h4 class="font-bold text-sm text-charcoal font-sans">Labortests & Katalyse</h4>
+            <p class="text-slate-600 font-sans text-xs">
+              Validierung des Ruthenium-Katalysators im kontinuierlichen 1.000-Stunden-Betrieb. Bau des miniaturisierten PEM-Stacks.
+            </p>
+            <div class="pt-2 border-t border-line text-slate-500">TRL 4 erreicht</div>
+          </div>
+
+          <div class="p-6 border border-line bg-white space-y-3">
+            <span class="text-mars-vermilion font-bold block">PHASE 02 (MONATE 7–14)</span>
+            <h4 class="font-bold text-sm text-charcoal font-sans">Marskammer-Simulation</h4>
+            <p class="text-slate-600 font-sans text-xs">
+              Betrieb aller Komponenten in einer Kryo-Vakuumkammer bei 6 mbar CO₂ und -80 °C. Schmelztest in künstlichem Mars-Regolith-Eis.
+            </p>
+            <div class="pt-2 border-t border-line text-slate-500">TRL 6 erreicht</div>
+          </div>
+
+          <div class="p-6 border border-line bg-white space-y-3">
+            <span class="text-methalox-cyan font-bold block">PHASE 03 (MONATE 15–22)</span>
+            <h4 class="font-bold text-sm text-charcoal font-sans">Payload-Integration</h4>
+            <p class="text-slate-600 font-sans text-xs">
+              Fertigung des Flug-Chassis im 9-Meter-Standardrack. Vibrations- und Akustiktests nach Trägerraketen-Normen.
+            </p>
+            <div class="pt-2 border-t border-line text-slate-500">TRL 7/8 erreicht</div>
+          </div>
+
+          <div class="p-6 border border-line bg-white space-y-3">
+            <span class="text-methalox-cyan font-bold block">PHASE 04 (MONAT 24+)</span>
+            <h4 class="font-bold text-sm text-charcoal font-sans">Serienproduktion</h4>
+            <p class="text-slate-600 font-sans text-xs">
+              Serienfertigung und schlüsselfertige Übergabe an Raumfahrtunternehmen zur Montage im Frachtraum vor dem Start.
+            </p>
+            <div class="pt-2 border-t border-line text-slate-500">TRL 9 (Flight Ready)</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 3. FUNKTIONSWEISE (SYSTEMABLAUF)                                        -->
+    <!-- ======================================================================= -->
+    <section id="page-process" class="page-content hidden space-y-16">
+      
+      <div class="border-b border-charcoal pb-8">
+        <span class="font-mono text-xs uppercase tracking-widest text-slate-500 block mb-2">SYSTEMABLAUF</span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-charcoal mb-4">
+          Wie die Maschine auf dem Mars arbeitet
+        </h1>
+        <p class="text-lg text-slate-700 max-w-3xl font-light leading-relaxed">
+          Vollständiger automatisierter Betriebsablauf vom Moment des Aufsetzens bis zum Abschluss der Treibstoffbetankung.
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <div class="p-8 border border-line bg-white space-y-2">
+          <span class="font-mono text-xs text-mars-vermilion font-bold">1. LANDUNG & DEPLOYMENT</span>
+          <h3 class="text-xl font-bold text-charcoal">Autonome Standort-Verifikation</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Nach der Landung der Trägerrakete verifiziert die Sensorik der Maschine über Bodenradar die exakte Tiefe des subglazialen Eises und aktiviert die thermische Schmelzbohrsonde.
+          </p>
+        </div>
+
+        <div class="p-8 border border-line bg-white space-y-2">
+          <span class="font-mono text-xs text-mars-vermilion font-bold">2. KONTINUIERLICHE EXTRAKTION</span>
+          <h3 class="text-xl font-bold text-charcoal">Parallelbetrieb von Eis- und CO₂-Förderung</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Die Schmelzsonde pumpt kontinuierlich gereinigtes flüssiges Wasser in den internen Pufferbehälter, während die thermischen Sorptionskompressoren atmosphärisches CO₂ ansaugen und verdichten.
+          </p>
+        </div>
+
+        <div class="p-8 border border-line bg-white space-y-2">
+          <span class="font-mono text-xs text-methalox-cyan font-bold">3. SYNTHESE-REAKTIONEN</span>
+          <h3 class="text-xl font-bold text-charcoal">Gekoppelte Elektrolyse & Sabatier-Methanisierung</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Wasser wird in Wasserstoff und Sauerstoff zerlegt. Der Wasserstoff reagiert unverzüglich mit dem CO₂ zu hochreinem Methan. Die exotherme Reaktionswärme wird über interne Wärmetauscher zur Unterstützung der Eisschmelzung genutzt.
+          </p>
+        </div>
+
+        <div class="p-8 border border-line bg-white space-y-2">
+          <span class="font-mono text-xs text-methalox-cyan font-bold">4. KRYOTANKING</span>
+          <h3 class="text-xl font-bold text-charcoal">Dauerhafte Tiefstkühlung & Transfer</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Verflüssigung von Methan (111,6 K) und Sauerstoff (90,2 K) und verlustfreier Transfer in die Haupttanks der Trägerrakete bis zum Erreichen der vollen Rückflugmasse.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 4. REAKTIONSCHEMIE (DEEP DIVE OHNE FLAMMEN-THEORIE)                     -->
+    <!-- ======================================================================= -->
+    <section id="page-chemistry" class="page-content hidden space-y-16">
+      
+      <div class="border-b border-charcoal pb-8">
+        <span class="font-mono text-xs uppercase tracking-widest text-slate-500 block mb-2">THERMODYNAMIK & STÖCHIOMETRIE</span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-charcoal mb-4">
+          Die chemische Kinetik im Detail
+        </h1>
+        <p class="text-lg text-slate-700 max-w-3xl font-light leading-relaxed">
+          Reaktionsenthalpien, Katalysatormechanismen und die thermodynamische Massenbilanz der Mars-ISRU-Synthese.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Reaktion 1 -->
+        <div class="border border-line bg-white p-7 sm:p-8 space-y-4">
+          <div class="flex justify-between items-baseline font-mono text-xs">
+            <span class="font-bold text-mars-vermilion">REAKTION I</span>
+            <span class="text-slate-500">WASSERELEKTROLYSE</span>
+          </div>
+          <div class="font-mono font-bold py-4 px-4 bg-slate-50 border border-line text-charcoal whitespace-nowrap overflow-x-auto tracking-tight" style="font-size: clamp(0.88rem, 1.22vw, 1.18rem);">
+            2&nbsp;H<sub>2</sub>O&nbsp;(l) &longrightarrow; 2&nbsp;H<sub>2</sub>&nbsp;(g) + O<sub>2</sub>&nbsp;(g)
+          </div>
+          <div class="space-y-2 text-sm text-slate-600 leading-relaxed">
+            <p><strong>Enthalpie:</strong> &Delta;H&deg; = +285,8&nbsp;kJ/mol (pro mol H<sub>2</sub>O; +571,6&nbsp;kJ/mol für die gezeigte 2-mol-Reaktionsgleichung; endotherm, elektrische Energie).</p>
+            <p><strong>Membran:</strong> Protonenaustauschmembran (PEM) mit Platin/Iridium-Katalysator.</p>
+            <p><strong>Funktion:</strong> Spaltung des geschmolzenen Mars-Wassers in H<sub>2</sub> für Sabatier und flüssigen Raketen-Sauerstoff.</p>
+          </div>
+        </div>
+
+        <!-- Reaktion 2 -->
+        <div class="border border-line bg-white p-7 sm:p-8 space-y-4">
+          <div class="flex justify-between items-baseline font-mono text-xs">
+            <span class="font-bold text-methalox-cyan">REAKTION II</span>
+            <span class="text-slate-500">SABATIER-METHANISIERUNG</span>
+          </div>
+          <div class="font-mono font-bold py-4 px-4 bg-slate-50 border border-line text-charcoal whitespace-nowrap overflow-x-auto tracking-tight" style="font-size: clamp(0.88rem, 1.22vw, 1.18rem);">
+            CO<sub>2</sub>&nbsp;(g) + 4&nbsp;H<sub>2</sub>&nbsp;(g) &#8652; CH<sub>4</sub>&nbsp;(g) + 2&nbsp;H<sub>2</sub>O&nbsp;(g)
+          </div>
+          <div class="space-y-2 text-sm text-slate-600 leading-relaxed">
+            <p><strong>Enthalpie:</strong> &Delta;H&deg;<sub>298</sub> = &minus;165,0&nbsp;kJ/mol (stark exotherm).</p>
+            <p><strong>Katalysator:</strong> 0,5&nbsp;% Ruthenium auf Al<sub>2</sub>O<sub>3</sub>-Pellets bei 400&nbsp;&deg;C.</p>
+            <p><strong>Kreislauf:</strong> 100&nbsp;% des anfallenden Wassers wird im Kondensator zurückgewonnen und erneut elektrolysiert.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sauerstoff-Stöchiometrie -->
+      <div class="border border-line bg-white p-8 space-y-4">
+        <h3 class="text-xl font-bold text-charcoal">
+          Lösung des Stöchiometrie-Problems für moderne Raketentriebwerke
+        </h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Eine theoretisch reine Sabatier-Kopplung erzeugt Sauerstoff und Methan in einem Massenverhältnis von 2:1. Moderne Triebwerke (wie Raptor) verbrennen jedoch für maximalen spezifischen Impuls bei einem Mischungsverhältnis von <strong>3,55 : 1</strong>.
+        </p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Unsere Anlage gleicht dieses Defizit durch eine <strong>asymmetrische Zusatz-Elektrolyse</strong> von zusätzlichem Mars-Eis aus, wodurch das exakte 3,55:1 Verhältnis direkt in den Tanks bereitsteht.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 5. SPEZIFIKATIONEN                                                      -->
+    <!-- ======================================================================= -->
+    <section id="page-specs" class="page-content hidden space-y-16">
+      
+      <div class="border-b border-charcoal pb-8">
+        <span class="font-mono text-xs uppercase tracking-widest text-slate-500 block mb-2">DATENBLATT</span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-charcoal mb-4">
+          Technische Spezifikationen: ARES-1
+        </h1>
+        <p class="text-lg text-slate-700 max-w-3xl font-light leading-relaxed">
+          Standardisierte Parameter für die Montage in Trägerraketen-Nutzlastschächten.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="border border-line bg-white p-8">
+          <h3 class="font-mono text-xs uppercase tracking-wider font-bold text-slate-500 mb-4 pb-2 border-b border-line">
+            MECHANIK & ABMESSUNGEN
+          </h3>
+          <div class="divide-y divide-line font-mono text-xs">
+            <div class="py-3 flex justify-between"><span class="text-slate-500">Rack-Format:</span> <span class="font-semibold text-charcoal">9,0 m Payload Envelope</span></div>
+            <div class="py-3 flex justify-between"><span class="text-slate-500">Startmasse (Trocken):</span> <span class="font-semibold text-charcoal">4.850 kg</span></div>
+            <div class="py-3 flex justify-between"><span class="text-slate-500">Elektrischer Bedarf:</span> <span class="font-semibold text-charcoal">220 – 280 kWe</span></div>
+            <div class="py-3 flex justify-between"><span class="text-slate-500">Betriebslebensdauer:</span> <span class="font-semibold text-charcoal">> 10 Mars-Jahre</span></div>
+          </div>
+        </div>
+
+        <div class="border border-line bg-white p-8">
+          <h3 class="font-mono text-xs uppercase tracking-wider font-bold text-slate-500 mb-4 pb-2 border-b border-line">
+            PRODUKTIONSAUSSTOSS
+          </h3>
+          <div class="divide-y divide-line font-mono text-xs">
+            <div class="py-3 flex justify-between"><span class="text-slate-500">Methalox gesamt:</span> <span class="font-semibold text-charcoal">1.250 kg pro Sol</span></div>
+            <div class="py-3 flex justify-between"><span class="text-slate-500">Flüssigmethan (LCH₄):</span> <span class="font-semibold text-charcoal">275 kg / Sol @ 111,6 K</span></div>
+            <div class="py-3 flex justify-between"><span class="text-slate-500">Flüssigsauerstoff (LOX):</span> <span class="font-semibold text-charcoal">975 kg / Sol @ 90,2 K</span></div>
+            <div class="py-3 flex justify-between"><span class="text-slate-500">O/F Massenverhältnis:</span> <span class="font-semibold text-charcoal">3,55 : 1 (Flugfertig)</span></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 6. BUSINESSPLAN (VISIONÄR, INSTITUTIONELL, VOLLSTÄNDIG)                 -->
+    <!-- ======================================================================= -->
+    <section id="page-businessplan" class="page-content hidden space-y-16">
+      
+      <div class="border-b border-charcoal pb-8">
+        <span class="font-mono text-xs uppercase tracking-widest text-slate-500 block mb-2">STRATEGISCHES MEMORANDUM // INSTITUTIONELLE INVESTOREN</span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-charcoal mb-4">
+          Geschäftsplan Methalox Systems AG
+        </h1>
+        <p class="text-lg text-slate-700 max-w-3xl font-light leading-relaxed">
+          Wirtschaftliche Erschließung der Mars-Oberfläche durch autonome Energie- und Treibstoffinfrastruktur. Eine Analyse des physikalischen Massenhebels, der Marktpotenziale und der Industrialisierung bis 2038.
+        </p>
+      </div>
+
+      <!-- KAPITEL 1 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-mars-vermilion block mb-1">KAPITEL 1</span>
+          <h2 class="text-2xl font-bold text-charcoal">Das fundamentale Gesetz der Raumfahrt und die wirtschaftliche Hebelwirkung</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">1.1 Die Tyrannei der Ziolkowski Raketengleichung</h3>
+          <p>
+            Jede Mission zu einem anderen Himmelskörper leidet unter dem exponentiellen Treibstoffbedarf der Erdanziehung. Um ein Kilogramm Nutzlast auf der Marsoberfläche zu landen, müssen auf der Erde gegenwärtig zwischen fünfzehn und zweiundzwanzig Kilogramm Masse in die erdnahe Umlaufbahn geschossen werden. Wenn ein Raumschiff auch den Treibstoff für den Rückflug von der Erde mitschleppen müsste, vervielfacht sich dieser Aufwand derart dramatisch, dass eine bemannte Rückkehr wirtschaftlich unmöglich wird. Ein einzelner Starship-Rückstart erfordert rund eintausendzweihundert Tonnen Treibstoff. Diese Masse von der Erde heranzutransportieren würde dutzende Betankungsflüge im Orbit und Kosten im Milliardenbereich pro Einzelmission verursachen.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">1.2 Der Massenhebel vor Ort</h3>
+          <p>
+            Methalox Systems durchbricht diese Barriere durch In-Situ-Ressourcennutzung. Unser ARES System wiegt beim Start weniger als fünf Tonnen. Während eines synodischen Marsjahres erzeugt eine einzige Anlage über vierhundert Tonnen flüssigen Treibstoff. Das Verhältnis von Systemmasse zu erzeugtem Treibstoff übersteigt den Faktor achtzig. Wir exportieren keine Materie durch das Gravitationsfeld der Erde, sondern lediglich die katalytische Maschine, welche die frei verfügbaren Ressourcen des Mars veredelt. Dies verwandelt den Rückflug von einem unbezahlbaren Logistikalbtraum in einen planbaren Industrieprozess.
+          </p>
+        </div>
+      </div>
+
+      <!-- KAPITEL 2 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-charcoal block mb-1">KAPITEL 2</span>
+          <h2 class="text-2xl font-bold text-charcoal">Marktumfeld und der Flaschenhals der interplanetaren Exploration</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">2.1 Das Aufkommen wiederverwendbarer Schwerlastträger</h3>
+          <p>
+            Mit der Einsatzreife von SpaceX Starship und Blue Origin New Glenn sinken die Transportkosten in den Weltraum um mehr als neunzig Prozent. Der Engpass der Raumfahrt verschiebt sich dadurch fundamental. Bisher war der Start das unüberwindbare Hindernis. In den kommenden zwei Jahrzehnten wird die Überlebensfähigkeit und Energieversorgung an der Zieloberfläche zum bestimmenden Nadelöhr. Raketen können nun mit hoher Taktung zum Mars fliegen, sitzen dort jedoch fest, solange vor Ort keine industrielle Betankung existiert.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">2.2 Das logistische Vakuum auf der Marsoberfläche</h3>
+          <p>
+            Während Dutzende Unternehmen an Landefähren, Raumanzügen und Kommunikationskonstellationen arbeiten, entwickelt kaum ein Akteur standardisierte Produktionsanlagen für Großmengen an Treibstoff. Staatliche Agenturen verfügen über experimentelle Machbarkeitsstudien im Labormaßstab, besitzen aber keine schlüsselfertigen Industrieanlagen. Methalox Systems besetzt diese Leerstelle als erster unabhängiger Ausrüster. Wir betreiben keine eigenen Raketen, sondern fungieren als unverzichtbarer Infrastrukturlieferant für sämtliche Trägersysteme.
+          </p>
+        </div>
+      </div>
+
+      <!-- KAPITEL 3 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-methalox-cyan block mb-1">KAPITEL 3</span>
+          <h2 class="text-2xl font-bold text-charcoal">Produktportfolio und geschützte Systemarchitektur</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">3.1 Das schlüsselfertige ARES Standardmodul</h3>
+          <p>
+            Unser Kernprodukt ist das modulare ARES Kraftwerk. Die Anlage wird im Standard-Frachtrahmen montiert, der mit den Lastaufnahmepunkten moderner Schwerlastraketen kompatibel ist. Der gesamte Ablauf von der Verankerung im Boden über das Ausfahren der thermischen Schmelzbohrsonde bis zur kontinuierlichen Sorptionsverdichtung funktioniert vollkommen autonom. Die Anlage enthält interne Diagnoseprogramme, die mechanische Toleranzen selbsttätig nachjustieren und Verschleiß frühzeitig kompensieren.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">3.2 Technologischer Schutzwall und geistiges Eigentum</h3>
+          <p>
+            Unser Wettbewerbsvorteil ruht auf vier eng verzahnten Schutzmechanismen. Erstens halten wir Patente auf die verschleißfreie Zeolith-Adsorptionsverdichtung unter Niederdruckbedingungen, welche mechanische Kolbenkompressoren überflüssig macht. Zweitens schützen wir die strukturierte Ruthenium-Beschichtung auf porösen Aluminiumoxid-Trägern, die bei vierhundert Grad Celsius über zehntausend Betriebsstunden stabil bleibt, ohne zu verkoken. Drittens verfügen wir über proprietäre Softwarealgorithmen zur autonomen Steuerung der Schmelzkaverne im Permafrost. Viertens sichern wir uns durch ein weltweites Lieferantenabkommen exklusive Fertigungskontrakte für kryogene Pulsrohrkühler in Raumfahrtqualität.
+          </p>
+        </div>
+      </div>
+
+      <!-- KAPITEL 4 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-charcoal block mb-1">KAPITEL 4</span>
+          <h2 class="text-2xl font-bold text-charcoal">Zielgruppen und Marktsegmentierung</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">4.1 Staatliche Raumfahrtagenturen und internationale Allianzen</h3>
+          <p>
+            Im Rahmen des Artemis-Programms und nachfolgender Mars-Explorationsverträge verlangen die NASA, die ESA sowie asiatische Partnerorganisationen nachweisbare Rückkehrsicherheit für menschliche Besatzungen. Die Regierungsbudgets für In-Situ-Technologien steigen kontinuierlich. Diese Kunden zeichnen sich durch sehr hohe Zahlungsbereitschaft, langfristige Entwicklungsverträge und strenge Qualitätsaudits aus. Wir treten hierbei als qualifizierter Subunternehmer der großen Raumfahrtkonsortien auf.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">4.2 Kommerzielle Frachtanbieter und Pioniere der planetaren Besiedlung</h3>
+          <p>
+            Private Raumfahrtunternehmen verfolgen das Ziel, wiederverwendbare Großraumschiffe in kurzen Intervallen zwischen Erde und Mars pendeln zu lassen. Für diese Akteure bedeutet jedes blockierte Schiff auf der Marsoberfläche gebundenes Kapital im neunstelligen Bereich. Unser Wertversprechen an diese Kundengruppe lautet garantierte Betankung innerhalb eines vordefinierten Zeitfensters, damit die Flotte im nächsten Transferfenster zur Erde zurückkehren kann.
+          </p>
+        </div>
+      </div>
+
+      <!-- KAPITEL 5 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-mars-vermilion block mb-1">KAPITEL 5</span>
+          <h2 class="text-2xl font-bold text-charcoal">Geschäftsmodell und Erlösmechanik</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">5.1 Hardwareverkauf mit langfristigen Serviceverträgen</h3>
+          <p>
+            Im ersten Geschäftsfeld verkaufen wir schlüsselfertige ARES Einheiten direkt an Trägerbetreiber oder staatliche Kunden. Der Richtpreis für eine voll qualifizierte Fluganlage liegt bei fünfundachtzig Millionen Euro. Daran gekoppelt sind wiederkehrende Serviceverträge für Missionsüberwachung, Softwareupdates und telemetrische Prozessoptimierung über die gesamte zehnjährige Lebensdauer des Reaktors.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">5.2 Treibstoffbezugstarife an der Oberfläche</h3>
+          <p>
+            Im zweiten Geschäftsfeld behält Methalox Systems das Eigentum an eigenen Anlagenclustern auf dem Mars und verkauft flüssigen Treibstoff über standardisierte Entnahmestellen an ankommende Raumschiffe. Der Zielpreis liegt bei vierhundertfünfzig Euro pro Kilogramm Methalox. Verglichen mit den Transportkosten von mehreren tausend Euro pro Kilogramm von der Erde bietet dieses Modell unseren Kunden eine Ersparnis von über achtzig Prozent, während unsere Bruttomarge bei über fünfundsechzig Prozent liegt.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">5.3 Stückkostenanalyse und Deckungsbeitrag</h3>
+          <p>
+            Die reinen Produktionskosten einer ARES Einheit sinken durch modulare Serienfertigung von anfangs vierzig Millionen Euro für den ersten Prototyp auf unter achtzehn Millionen Euro ab dem zehnten Exemplar. Die wiederkehrenden Betriebs- und Überwachungskosten pro Anlage belaufen sich auf weniger als achthunderttausend Euro jährlich. Eine einzelne Anlage generiert bei voller Auslastung einen kumulierten Treibstoffwert von über einhundertachtzig Millionen Euro während ihrer Einsatzzeit.
+          </p>
+        </div>
+      </div>
+
+      <!-- KAPITEL 6 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-charcoal block mb-1">KAPITEL 6</span>
+          <h2 class="text-2xl font-bold text-charcoal">Entwicklungsfahrplan und Fertigungshochlauf</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">6.1 Vierstufige Technologievalidierung bis zur Flugreife</h3>
+          <p>
+            Unsere Industrialisierung gliedert sich in vier klar definierte Etappen. Die erste Etappe umfasst den Dauerbetrieb des Katalysatorbetts und der PEM-Zelle unter realen Gaszusammensetzungen im Labor. Die zweite Etappe überführt die Module in eine begehbare Kryo-Vakuumkammer, welche die Marsatmosphäre mit Kohlendioxid bei sechs Millibar und wechselnden Temperaturen von minus einhundertzwanzig bis plus zwanzig Grad Celsius nachbildet. Die dritte Etappe validiert die strukturelle Integrität des Gesamtröhrensystems unter Startvibrationen und Schockbelastungen. Die vierte Etappe mündet in die Auslieferung des ersten unbemannten Demonstrators zur Montage im Flugchassis.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">6.2 Zuliefernetzwerk und Redundanzmanagement</h3>
+          <p>
+            Um Klumpenrisiken zu vermeiden, arbeiten wir bei allen kritischen Komponenten mit doppelter Beschaffung. Für die protonenleitenden Membranen unterhalten wir Partnerschaften mit führenden europäischen Chemiekonzernen. Die spanabhebende Fertigung der hochdruckfesten Titan-Reaktorkörper erfolgt durch spezialisierte Präzisionsbetriebe in der Schweiz und Süddeutschland. Sämtliche Ventile und Messsonden sind zweifach redundant ausgelegt, damit der Ausfall eines einzelnen Sensors niemals zum Abbruch der Gesamtsynthese führt.
+          </p>
+        </div>
+      </div>
+
+      <!-- KAPITEL 7 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-methalox-deep block mb-1">KAPITEL 7</span>
+          <h2 class="text-2xl font-bold text-charcoal">Finanzierungsstrategie und Kapitalbedarf</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">7.1 Eigenkapitaltranchen und öffentliche Innovationsförderung</h3>
+          <p>
+            Unser Gesamtkapitalbedarf bis zur ersten Landung beläuft sich auf einhundertzwanzig Millionen Euro. Die Seed-Phase von acht Millionen Euro finanziert die Fertigstellung der Laborprüfstände und die Patentanmeldungen. Eine Serie-A-Runde über zweiunddreißig Millionen Euro finanziert den Bau der industriellen Mars-Simulationskammer und die Zertifizierung des Baugruppendesigns. Die finale Serie B über achtzig Millionen Euro finanziert die Produktion des ersten orbitalen Flugmodells und deckt die Integrationskosten beim Trägerraketenanbieter ab. Diese Tranchen werden flankiert durch nicht verwässernde Zuschüsse europäischer Raumfahrtförderprogramme und Verteidigungsinnovationsfonds.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">7.2 Erlösprognose und Amortisationspfad</h3>
+          <p>
+            Wir erreichen die operative Gewinnschwelle im fünften Geschäftsjahr mit der Auslieferung der zweiten kommerziellen Anlage. Im siebten Geschäftsjahr planen wir mit einem Jahresumsatz von über zweihundertvierzig Millionen Euro bei einer operativen Marge vor Steuern und Zinsen von zweiunddreißig Prozent. Das Renditeprofil kombiniert die Stabilität langfristiger Infrastrukturverträge mit dem überdurchschnittlichen Bewertungsmultiplikator führender Deep-Tech-Monopole.
+          </p>
+        </div>
+      </div>
+
+      <!-- KAPITEL 8 -->
+      <div class="border border-line bg-white p-8 space-y-6">
+        <div>
+          <span class="font-mono text-xs font-bold uppercase text-charcoal block mb-1">KAPITEL 8</span>
+          <h2 class="text-2xl font-bold text-charcoal">Regulatorisches Umfeld und planetarer Schutz</h2>
+        </div>
+        
+        <div class="space-y-4 text-slate-700 text-sm leading-relaxed">
+          <h3 class="text-base font-bold text-charcoal">8.1 Internationale COSPAR Leitlinien</h3>
+          <p>
+            Die Gewinnung von Wasser aus unterirdischem Eis berührt empfindliche Schutzzonen der Kategorie vier nach den Richtlinien des Committee on Space Research. Unsere Schmelzsonden durchlaufen vor dem Start ein mehrstufiges Sterilisationsverfahren mit Hitze und ultravioletter Strahlung, um jede biologische Kontamination des Marsbodens auszuschließen. Unsere Konstruktion erfüllt die strengen Biosphären-Schutzstandards sämtlicher internationaler Raumfahrtverträge.
+          </p>
+
+          <h3 class="text-base font-bold text-charcoal mt-6">8.2 Souveränität und Exportkontrolle</h3>
+          <p>
+            Treibstoffsyntheseanlagen gelten als strategische Dual-Use-Güter und unterliegen strengen Exportkontrollbestimmungen. Durch unseren Hauptsitz in der Schweiz und Entwicklungsknoten im europäischen Wirtschaftsraum sichern wir unseren Kunden Unabhängigkeit von einseitigen geopolitischen Beschränkungen. Wir bieten Raumfahrtnationen eine souveräne, neutrale Plattform zur Gewährleistung ihrer eigenen interplanetaren Versorgungswege.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 7. PRIVATER FOUNDER-ROADMAP-TAB (2025–2040+)                            -->
+    <!-- ======================================================================= -->
+    <section id="page-roadmap" class="page-content hidden space-y-12">
+
+      <!-- UNAUTHENTICATED LOGIN GATE (Wird bei gültigem Token automatisch ausgeblendet) -->
+      <div id="roadmap-login-gate" class="max-w-lg mx-auto my-12 border border-charcoal bg-white p-8 sm:p-10 shadow-sm">
+        <div class="space-y-6">
+          <div>
+            <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-mars-vermilion font-bold mb-2">
+              <span>🔒 RESTRICTED FOUNDER ACCESS</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-charcoal tracking-tight">
+              Founder Command Center (Operationen &amp; Strategie)
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Dieser Bereich enthält die operative Ausführungs-Roadmap (2025–2040+) sowie das strategische Dossier (ASML-Chokepoint-Doktrin, Politik, Dual-Use &amp; Macht-Scorecard). Nach einmaliger Eingabe bleibt dieses Gerät dauerhaft entsperrt (doppelte Persistenz über <code class="font-mono bg-slate-100 px-1 py-0.5">localStorage</code> und 10-Jahres-Cookie).
+            </p>
+          </div>
+
+          <form onsubmit="event.preventDefault(); if (window.FOUNDER_ROADMAP_APP) { window.FOUNDER_ROADMAP_APP.handleLoginSubmit(event); } return false;" class="space-y-4">
+            <div>
+              <label for="founder-password-input" class="block font-mono text-xs font-bold uppercase tracking-wider text-charcoal mb-2">
+                FOUNDER-PASSWORT (SHA-256 VERIFIKATION)
+              </label>
+              <input
+                id="founder-password-input"
+                type="password"
+                autocomplete="current-password"
+                required
+                placeholder="Passwort eingeben..."
+                class="w-full px-4 py-3 border border-line focus:border-charcoal focus:outline-none font-mono text-sm text-charcoal bg-slate-50 focus:bg-white transition-colors"
+              />
+            </div>
+
+            <div id="founder-login-error" class="hidden p-3 bg-red-50 border border-red-300 text-red-800 font-mono text-xs leading-relaxed"></div>
+
+            <button
+              type="submit"
+              class="w-full py-3.5 px-6 bg-charcoal hover:bg-slate-800 text-white font-mono text-xs font-semibold uppercase tracking-widest transition-colors"
+            >
+              Dauerhaft entsperren →
+            </button>
+          </form>
+
+          <div class="pt-4 border-t border-line font-mono text-[11px] text-slate-500 flex items-center justify-between">
+            <span>Web Crypto API · SHA-256</span>
+            <span>Zero Plaintext Storage</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROTECTED MOUNT (Leer im unauthentifizierten Zustand; wird erst nach Login befüllt) -->
+      <div id="roadmap-protected-mount" class="hidden"></div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- FOOTER                                                                    -->
+  <!-- ========================================================================= -->
+  <footer class="border-t border-line mt-24 py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-mono text-slate-500">
+      <div class="flex items-center gap-3">
+        <span class="w-2.5 h-2.5 bg-charcoal"></span>
+        <span class="text-charcoal font-bold tracking-tight">METHALOX SYSTEMS AG</span>
+        <span>— AUTONOMOUS MARS ISRU ARCHITECTURE</span>
+      </div>
+      <div>
+        <span>SCHWEIZER PRÄZISIONS-HARDWARE FÜR INTERPLANETARE MISSIONS-INFRASTRUKTUR</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FOUNDER ROADMAP CONFIG, DATA & INTERACTIVE ENGINE -->
+  <script src="config/founderAuth.js"></script>
+  <script src="data/roadmapData.js"></script>
+  <script src="data/strategyData.js"></script>
+  <script src="data/roadmapApp.js"></script>
+
+  <!-- SCRIPT ZUM UMSCHALTEN DER SEITEN -->
+  <script>
+    const ACTIVE_PAGE_STORAGE_KEY = 'methalox_active_page_v1';
+
+    function showPage(pageId, skipScroll) {
+      const pages = document.querySelectorAll('.page-content');
+      pages.forEach(p => {
+        p.classList.add('hidden');
+        p.classList.remove('block');
+      });
+
+      const target = document.getElementById(pageId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('block');
+      }
+
+      try {
+        localStorage.setItem(ACTIVE_PAGE_STORAGE_KEY, pageId);
+      } catch (e) {}
+
+      if (pageId === 'page-roadmap' && window.FOUNDER_ROADMAP_APP) {
+        window.FOUNDER_ROADMAP_APP.renderProtectedRoadmap();
+      }
+
+      const navTabs = {
+        'page-overview': 'tab-overview',
+        'page-blueprint': 'tab-blueprint',
+        'page-process': 'tab-process',
+        'page-chemistry': 'tab-chemistry',
+        'page-specs': 'tab-specs',
+        'page-businessplan': 'tab-businessplan',
+        'page-roadmap': 'tab-roadmap'
+      };
+
+      Object.entries(navTabs).forEach(([pid, tid]) => {
+        const tabEl = document.getElementById(tid);
+        if (tabEl) {
+          if (pid === pageId) {
+            tabEl.classList.remove('border-transparent', 'text-slate-500');
+            tabEl.classList.add('border-charcoal', 'text-charcoal', 'font-semibold');
+          } else {
+            tabEl.classList.remove('border-charcoal', 'text-charcoal', 'font-semibold');
+            tabEl.classList.add('border-transparent', 'text-slate-500');
+          }
+        }
+      });
+
+      if (!skipScroll) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+      try {
+        const savedPage = localStorage.getItem(ACTIVE_PAGE_STORAGE_KEY);
+        if (savedPage && document.getElementById(savedPage)) {
+          showPage(savedPage, true);
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>

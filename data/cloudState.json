@@ -1,0 +1,33 @@
+{
+  "app": "Methalox Systems AG — Founder Command Center (Cloud-Sync)",
+  "schemaVersion": 2,
+  "updatedAt": "2026-11-25T17:00:00.000Z",
+  "activeSubTab": "operationen",
+  "operations": {
+    "checkedItems": {
+      "p0-c1": true,
+      "p0-c2": true,
+      "p0-c3": true,
+      "p0-c4": true,
+      "p0-sg1": true,
+      "p0-sg2": true
+    },
+    "phaseNotes": {},
+    "lastUpdated": "2026-11-25T17:00:00.000Z"
+  },
+  "strategy": {
+    "asmlMatrixStatus": {
+      "asml-dim-1": "Konzept",
+      "asml-dim-2": "Konzept",
+      "asml-dim-3": "Konzept",
+      "asml-dim-4": "Konzept",
+      "asml-dim-5": "Konzept",
+      "asml-dim-6": "Konzept"
+    },
+    "scorecardChecked": {},
+    "pillarNotes": {},
+    "pillarNotesOpen": {},
+    "decisionLog": [],
+    "lastUpdated": "2026-11-25T17:00:00.000Z"
+  }
+}
