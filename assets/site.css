@@ -1,0 +1,201 @@
+/* ==========================================================================
+   METHALOX SYSTEMS AG — SWISS AEROSPACE EDITORIAL DESIGN SYSTEM
+   Clean architectural surfaces, precision hairlines, tabular typography
+   ========================================================================== */
+
+:root {
+  --bg-paper: #F6F5F0;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #ECEAE3;
+  --bg-ink: #141619;
+  --bg-ink-elevated: #1D2025;
+
+  --text-primary: #141619;
+  --text-secondary: #4E525A;
+  --text-muted: #767B84;
+
+  --border-hairline: #DDDBD2;
+  --border-strong: #141619;
+
+  --accent-vermilion: #D64900;
+  --accent-cryo: #0369A1;
+}
+
+html {
+  background-color: var(--bg-paper);
+  color: var(--text-primary);
+}
+
+body {
+  background-color: var(--bg-paper);
+  color: var(--text-primary);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numerals for all engineering & financial figures */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Editorial Typography */
+.editorial-h1 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  font-weight: 700;
+}
+
+.editorial-h2 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  letter-spacing: -0.022em;
+  line-height: 1.12;
+  font-weight: 700;
+}
+
+/* Clean Top Navigation */
+.site-header {
+  background-color: rgba(246, 245, 240, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.site-nav-btn {
+  position: relative;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.16s ease;
+}
+
+.site-nav-btn:hover {
+  color: var(--text-primary);
+}
+
+.site-nav-btn.is-active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.site-nav-btn.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0.85rem;
+  right: 0.85rem;
+  bottom: -13px;
+  height: 2px;
+  background-color: var(--text-primary);
+}
+
+/* Photographic Frames */
+.photo-frame {
+  position: relative;
+  background-color: #E5E3DC;
+  border: 1px solid var(--border-hairline);
+  overflow: hidden;
+}
+
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.photo-card-link:hover .photo-frame img {
+  transform: scale(1.022);
+}
+
+/* Precision Hairline Grid Cells */
+.spec-hairline-grid {
+  display: grid;
+  border-top: 1px solid var(--border-hairline);
+  border-left: 1px solid var(--border-hairline);
+}
+
+.spec-hairline-grid > div {
+  border-right: 1px solid var(--border-hairline);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+/* Dark CAD Canvas (No grid clichés — matte anodized slate surface) */
+.cad-slate-panel {
+  background-color: var(--bg-ink);
+  color: #F3F4F6;
+  border: 1px solid #2A2E35;
+}
+
+.cad-hotspot {
+  cursor: pointer;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.cad-hotspot:hover {
+  opacity: 1;
+}
+
+/* Interactive Module Selector Buttons */
+.module-tab-btn {
+  text-align: left;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border-hairline);
+  background-color: var(--bg-surface);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.module-tab-btn:hover {
+  border-color: #A8A59B;
+}
+
+.module-tab-btn.is-selected {
+  background-color: var(--bg-ink);
+  border-color: var(--bg-ink);
+  color: #FFFFFF;
+}
+
+.module-tab-btn.is-selected .module-num {
+  color: #FF7A3D;
+}
+
+.module-tab-btn.is-selected .module-sub {
+  color: #A1A8B3;
+}
+
+/* Investor Chapter Navigation */
+.chapter-nav-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 0.875rem;
+  border-left: 2px solid var(--border-hairline);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+}
+
+.chapter-nav-item:hover {
+  color: var(--text-primary);
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+.chapter-nav-item.is-active {
+  border-left-color: var(--accent-vermilion);
+  color: var(--text-primary);
+  font-weight: 600;
+  background-color: var(--bg-surface);
+}
+
+/* Subtle Hide Scrollbar for Mobile Strips */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
